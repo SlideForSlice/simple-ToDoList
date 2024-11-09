@@ -16,8 +16,8 @@ class TaskORM(Model):
     __tablename__ = "tasks"
 
     id:Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str]
-    description: Mapped[Optional[str]]
+    name: Mapped[str] = mapped_column(nullable=False)
+    description: Mapped[Optional[str]] = mapped_column()
 
 async def create_tables():
     async with engine.begin() as connection:

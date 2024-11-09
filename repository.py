@@ -1,6 +1,7 @@
+
 from database import new_session, TaskORM
 from sqlalchemy import select
-from schemas import TaskAdd
+from schemas import TaskAdd, Task
 
 
 class TaskRepository:
@@ -8,7 +9,6 @@ class TaskRepository:
     async def add_task(cls, data: TaskAdd):
         async with new_session() as session:
             task_dict = data.model_dump()
-
             task = TaskORM(**task_dict)
             session.add(task)
             await session.flush()
@@ -20,6 +20,6 @@ class TaskRepository:
         async with new_session() as session:
             query = select(TaskORM)
             result = await session.execute(query)
-            task_models = result.scalar().all()
-            task_schemas = [TaskAdd.model_validate(task_model) for task_model in task_models]
+            task_models = result.scalars().all()
+            task_schemas = [TaskAdd(**task_model.__dict__) for task_model in task_models]
             return task_schemas
