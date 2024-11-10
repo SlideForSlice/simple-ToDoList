@@ -3,13 +3,11 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class TaskAdd(BaseModel):
+class TaskCreate(BaseModel):
     name: str
     description: Optional[str] = None
 
-class Task(TaskAdd):
+class TaskResponse(TaskCreate):
     id: int
 
-class TasId(BaseModel):
-    ok: bool = True
-    task_id: int
+
